@@ -1,1 +1,15 @@
 <h1>this is the scores pages</h1>
+
+
+
+<select ng-model="matchday" ng-options="data.name for data in rounds1"><h4>search using match day</h4></select>
+<div ng-repeat="data in rounds1 | filter:matchday.name:true">	
+<h1>{{data.name}}</h1>
+<div ng-repeat="anotherdata in data.matches">	
+<h2><a href="#/">{{anotherdata.team1.name}} vs {{anotherdata.team2.name}}</a></h2>
+<h4>DATE:{{anotherdata.date | date:'MM/dd/yyyy'}}  STATUS:</h4>
+</div>
+
+
+</div>
+<p>The above is the latest</p>

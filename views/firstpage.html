@@ -1,10 +1,26 @@
-<h1>hey this is the first page</h1>
+<style type="text/css">
 
-<div ng-repeat="angulardata in firstpage.ListData">
-	
-<h3>{{angulardata.name}}</h3>
 
-</div>
+
+
+</style>
+
+
+<h1>WELCOME TO THE FIRST PAGE. WE HAVE CURRENT SCORES HERE</h1>
+
+<select ng-model="matchday" ng-options="data.name for data in rounds">search using Matchday:</select>
+<div ng-repeat="data in rounds | filter:matchday.name:true">
+
+		<select ng-model="dates1" ng-options="anotherdata.date for anotherdata in data.matches"></select>
+		<h1>{{data.name}}</h1>
+		<div ng-repeat="anotherdata in data.matches">
+		<h2><a href="#/details/{{anotherdata.team1.key}}/{{ anotherdata.team2.key}}/{{anotherdata.date}}">{{anotherdata.date}}{{anotherdata.team1.key}}{{ anotherdata.team2.key}}{{anotherdata.team1.name}} vs {{anotherdata.team2.name}}</a></h2>
+		<h4>DATE:{{anotherdata.date | date:'MM/dd/yyyy'}}  STATUS:</h4>
+		</div>
+
+
+		</div>
+		<p>The above is the latest</p>
 
 
 <!--/div>
