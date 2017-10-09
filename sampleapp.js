@@ -4,6 +4,7 @@
 var ListData=[];
 var rounds=[];
 var Matches=[];
+var temp;
 
 //unified binding app binding//
 var myApp = angular.module('myApp', ['ngRoute']); 
@@ -57,11 +58,9 @@ myApp.config(['$routeProvider', function($routeProvider){
 myApp.controller('mainController',['$scope', '$log', '$http',function($scope,  $log, $http){
 
 	//var main =this;
-  $scope.ListData=[];//general list data
+  $scope.ListData;//general list data
   $scope.rounds=[];  //storing rounds value
-  $scope.Matches=[]; 
-  $scope.roundsDATA=[];//storing matches value
-  $scope.dates=[];
+  $scope.dates;
 
     //auto HTTP get request on binding controller
     $http({
@@ -70,13 +69,17 @@ myApp.controller('mainController',['$scope', '$log', '$http',function($scope,  $
            }).then(function sucessCallback(response){
 
                    //this for putting response data inside the listdata variable
-                   $scope.ListData.push(response.data);  
+                   $scope.ListData=response.data;  
+                   temp=response.data;
                    $scope.rounds=response.data.rounds;
+                   $scope.dates=$scope.ListData.rounds.matches; // i am not able to store dates
+
                                      
                    //ListData=response;
                    $log.info(response.data.name);      //to chek whether data from API is correct
-                   $log.info("matchName:"+$scope.ListData[0].name); //to check whether data has correctly been placed in the array
+                   $log.info("matchName:"+$scope.ListData.name); //to check whether data has correctly been placed in the array
                    $log.info("roundsName:"+$scope.rounds[0].name);//to check whether rounds data has been acquired
+                   console.log($scope.dates[1].date); // i am not able to print any date here
                    
                    },
 
@@ -104,8 +107,9 @@ myApp.controller('secondController',['$scope', '$log', '$http',function($scope, 
 
   $scope.List1Data=[];//general list data
   $scope.rounds1=[];  //storing rounds value
-  $scope.Matches1=[]; //storing matches value
-
+  $scope.Matches1=[];
+  $scope.testtemp; //storing matches value
+  
 
   $http({
         method: 'GET',
@@ -113,14 +117,16 @@ myApp.controller('secondController',['$scope', '$log', '$http',function($scope, 
            }).then(function sucessCallback(response){
 
                    //this for putting response data inside the listdata variable
-                   $scope.List1Data.push(response.data);  
+                   $scope.ListData.push(response.data);  
                    $scope.rounds1=response.data.rounds;
-                   $scope.Matches=response.data.rounds.matches;
+                   var temp=$scope.ListData.rounds;
+                   $scope.Matches=temp.matches;
                    //ListData=response;
                    $log.info(response.data.name);      //to chek whether data from API is correct
                    $log.info("matchName:"+$scope.ListData1[0].name); //to check whether data has correctly been placed in the array
                    $log.info("roundsName:"+$scope.rounds1[0].name);//to check whether rounds data has been acquired
                    $log.info("roundsDATE:"+$scope.Matches[0].date);
+              
                    },
 
                    function errorCallback(response){
@@ -181,17 +187,17 @@ myApp.controller('thirdController',['$scope', '$log', '$http',function($scope,  
 //------------------------------third page controller end------------------------------------
 
 //------------------------------current scores details controller-----------------------------
-myApp.controller('detailscontroller1',['$http','$location','routeParams', function($http,$location,$routeParams){
+myApp.controller('detailscontroller1',['$http','$location','$routeParams', function($http,$location,$routeParams,){
 
     var main = this ;
 
 
 console.log("routeservice has been invoked using ID's "+$routeParams.matchid1+$routeParams.matchid2+$routeParams.matchdate);
-        //variables to store all the data
-   /*     this.matchId1 = $routeParams.matchid1 ;                          //team 1 key is passed
+        //variables to store all the params data
+        this.matchId1 = $routeParams.matchid1 ;                         //team 1 key is passed
         this.matchId2 = $routeParams.matchid2 ;                          //team 2 key is passed
         this.matchDate = $routeParams.matchdate ;                        //team 3 key is passed 
-        
+        //to store team data and to process them 
         this.team1;
         this.team2;
         this.score1;
@@ -204,24 +210,18 @@ console.log("routeservice has been invoked using ID's "+$routeParams.matchid1+$r
         this.rounds1 = [];
       //calling using HTTP to get the data
 
-      $http({
-        method:'GET',
-        url:'https://raw.githubusercontent.com/openfootball/football.json/master/2016-17/en.1.json'
-      }).then(function sucessCallback(response){
-         main.matchStats(response.data);//getting the data        
-            console.log("http has been invoked");
-          // NOW THE KEYS ARE COMPARED WITH THE DATE 
-          this.matchStats = function(data){
-       // console.log(data);
-        main.rounds1 = data.rounds;
-
-     console.log(main.matchId1);
-     console.log(main.matchId2);     
-    for (var i in main.rounds1){
-       for (var j in main.rounds1[i].matches){
+          //logic for finding the correct data and matching it correctly
+      this.matchStats1 = function(data){
+                       console.log(data);
+                       main.rounds1 = data.rounds;
+                       console.log(main.matchId1);
+                       console.log(main.matchId2);     
+           for (var i in main.rounds1){
+               for (var j in main.rounds1[i].matches){
+                //console.log(main.rounds1[i].matches[j].team1.code);
         
-        if (main.rounds1[i].matches[j].team1.code== main.matchId1 && main.rounds1[i].matches[j].team2.code == main.matchId2 && main.rounds1[i].matches[j].date == main.matchDate){
-              console.log("working");
+                     if (main.rounds1[i].matches[j].team1.code== main.matchId1 && main.rounds1[i].matches[j].team2.code == main.matchId2 && main.rounds1[i].matches[j].date == main.matchDate){
+                  console.info("record found");
                   main.day = main.rounds1[i].name;                      
                    main.date = main.rounds1[i].matches[j].date;             //DISPLAYING THE DATE
                    main.team1 = main.rounds1[i].matches[j].team1.name;                     
@@ -232,14 +232,14 @@ console.log("routeservice has been invoked using ID's "+$routeParams.matchid1+$r
                    console.log(main.code1);
                    main.code2 = main.rounds1[i].matches[j].team2.code;                
                  if (main.score1 > main.score2){
-                    main.winner = ""+main.team1+" won" ;                     //TO CHECK IF TEAM A WON
+                    main.winner = ""+main.team1+" wins !!!! and dominates over "+main.team2;                     //TO CHECK IF TEAM A WON
                                                }
                  else if (main.score1 < main.score2){
-                 main.winner = ""+main.team2+" won" ;                         //TO CHECK IF TEAM B WON
+                 main.winner = ""+main.team2+" wins!! and dominates over"+main.team1;                         //TO CHECK IF TEAM B WON
                                                     }
                        
                   else {
-                         main.winner = "Match drawn" ;
+                         main.winner = "match is drawn!! " ;
 
                        } 
                       
@@ -250,9 +250,16 @@ console.log("routeservice has been invoked using ID's "+$routeParams.matchid1+$r
                  } // i loop end
              } //function end
 
+      $http({
+        method:'GET',
+        url:'https://raw.githubusercontent.com/openfootball/football.json/master/2016-17/en.1.json'
 
-
-         
+      }).then(function sucessCallback(response){
+                         //getting the data        
+                         console.log("http has been invoked"+response.data);
+                         // NOW THE KEYS ARE COMPARED WITH THE DATE                        
+                         main.matchStats1(response.data);      
+                          console.log("function has been defined");
 
 
       },
@@ -268,7 +275,7 @@ console.log("routeservice has been invoked using ID's "+$routeParams.matchid1+$r
       );
 
 
-*/
+
 
 
 
