@@ -10,13 +10,14 @@
 
 <h1>WELCOME TO THE FIRST PAGE. WE HAVE CURRENT SCORES HERE</h1>
 
+
 <!--</select>-->
 <ul>
  <li>MATCHDAY:<select ng-model="days" ng-options="data.name for data in rounds" ></select></li>
- <li>SEARCH USING DATE:<input type="text" size="8" id="dat" ng-model="teamsearch.date"></li>
- <li>SEARCH USING TEAM:<input type="text" size="8" id="dat" ng-model="teamname.team1.name"></li>
- <li>SEARCH USING CHALLENGER:<input type="text" size="8" id="dat" ng-model="teamname2.team2.name"></li>
- <li>SEARCH USING keynames:<input type="text" size="8" id="dat" ng-model="keynames.team1.key"></li>
+ <li>SEARCH USING DATE:<input type="text" size="8" id="datau" ng-model="teamsearch.date"></li>
+ <li>SEARCH BY TEAM NAME:<input type="text" size="8"  ng-model="teamname.team1.name"></li>
+ <li>SEARCH BY challenger:<input type="text" size="8"  ng-model="teamname2.team2.name"></li>
+ <li>SEARCH BY keynames:<input type="text" size="8"  ng-model="keynames.team1.key"></li>
 <ul>
 
 
@@ -38,10 +39,11 @@
 
 		</div>
 		<p>The above is the latest</p>
-<script type="text/javascript">
-	
-$('#dat').datepicker({});
 
-</script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script>
+
+<script type="text/javascript">
+$('#datau').datepicker({}); // this is not working
+</script>
