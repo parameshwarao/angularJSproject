@@ -1,2 +1,40 @@
+
+<link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet"> 
+
+
+<style type="text/css">
+.container #details li{
+	 font-family: 'Fjalla One', sans-serif;
+
+
+}	
+
+.container #details span{
+	color:red;
+}
+
+.container #details #date{
+	color:blue;
+}
+
+.container #details #scor{
+	color:#CE04C1;
+}
+
+.container #details #win{
+	color:#8632DB;
+}
+
+</style>
+<div class="container" id="details">
 <h1>FULL MATCH DETAILS ARE BELOW:-</h1>
-<H3>{{details1.team1}}VS{{details1.team2}}</H3>
+<ul>
+	<li><h1>GREAT MATCH BETWEEN:<span>{{details1.team1}} VS {{details1.team2}}</span></h1></li>
+	<li><h2>Date:<span id="date">{{details1.date | date:'d EEEE, MMMM ,yyyy'}}</span></h2></li>
+	<li><h2>{{details1.team1}} scores:<span id="scor">{{details1.score1}}</span></h2></li>
+	<li><h2>{{details1.team2}} scores:<span id="scor">{{details1.score2}}</span></h2></li>
+	<li><h1>MATCH RESULT:<span id="win">{{details1.winner}}</span></h1></li> 
+	<li><a href="#/">click here to go back</a></li>
+</ul>	
+</ul>	
+</div>
