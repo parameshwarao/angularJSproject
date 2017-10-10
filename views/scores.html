@@ -7,8 +7,23 @@
 	color: maroon;
 }
 
+ #end{
+color: red;
+font-family: 'Gloria Hallelujah', cursive;
+font-size:larger;
+
+}
 
 </style>
+<script type="text/javascript">
+	function ClearFields() {
+
+     document.getElementById("btn1").value = "";
+     document.getElementById("btn2").value = "";
+     document.getElementById("btn3").value = "";
+     document.getElementById("btn4").value = "";
+     document.getElementById("btn5").value = "";
+</script>
 
 
 <h1>HISTORY RECORDS OF EPL 15-16</h1>
@@ -16,11 +31,12 @@
 
 
 <ul>
- <li>MATCHDAY:<select ng-model="days" ng-options="data.name for data in rounds" ></select></li>
- <li>SEARCH USING DATE:<input type="text" size="8" id="dat" ng-model="teamsearch.date"></li>
- <li>SEARCH USING TEAM:<input type="text" size="8" id="dat" ng-model="teamname.team1.name"></li>
- <li>SEARCH USING CHALLENGER:<input type="text" size="8" id="dat" ng-model="teamname2.team2.name"></li>
- <li>SEARCH USING keynames:<input type="text" size="8" id="dat" ng-model="keynames.team1.key"></li>
+ <li>MATCHDAY:<select ng-model="days" id="btn1" ng-options="data.name for data in rounds" ></select></li>
+ <li>SEARCH USING YEAR:<select id="btn2" ng-model="teamsearch.date"><option value="2015">2015</option><option value="2016">2016</option></select></li>
+ <li>SEARCH USING TEAM:<input type="text" id="btn3" size="8"  ng-model="teamname.team1.name"></li>
+ <li>SEARCH USING CHALLENGER:<input id="btn4" type="text" size="8"  ng-model="teamname2.team2.name"></li>
+ <li>SEARCH USING keynames:<input id="btn5" type="text" size="8"  ng-model="keynames.team1.key"></li>
+  <li><button type="button" onclick="ClearFields();">Clear</button></li>
 <ul>
 
 
@@ -28,24 +44,13 @@
 
 
 <div id="container" ng-repeat="data in rounds | filter:days.name:true">
-
-		
-		<!--<h1>{{data.name}}</h1>-->
-		<div ng-repeat="anotherdata in data.matches | filter:teamsearch | filter:teamname | filter:teamname2 | filter:keynames">
-			
-		<h2><a href="#/details2/{{anotherdata.team1.code}}/{{ anotherdata.team2.code}}/{{anotherdata.date}}">{{anotherdata.team1.name}} vs {{anotherdata.team2.name}}</a></h2>
-		<h4>DATE:{{anotherdata.date | date:'MM/dd/yyyy'}}  KEYS:{{anotherdata.team1.key}},{{ anotherdata.team2.key}}</h4>
-		<h5 id="date">EVENT DAY:{{data.name}}</h2>
-		</div>
+	<div ng-repeat="anotherdata in data.matches | filter:teamsearch | filter:teamname | filter:teamname2 | filter:keynames">
+	<h2><a href="#/details2/{{anotherdata.team1.code}}/{{ anotherdata.team2.code}}/{{anotherdata.date}}">{{anotherdata.team1.name}} vs {{anotherdata.team2.name}}</a></h2>
+	<h4>DATE:{{anotherdata.date | date:'MM/dd/yyyy'}}  KEYS:{{anotherdata.team1.key}},{{ anotherdata.team2.key}}</h4>
+	<h5 id="date">EVENT DAY:{{data.name}}</h5>
+	</div>
 
 
 
-		</div>
-		<p>The above is the latest</p>
-<script type="text/javascript">
-	
-$('#dat').datepicker({}); // this is not working
-
-</script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</div>
+		<p id="end">End of record. No More Record!!</p>
