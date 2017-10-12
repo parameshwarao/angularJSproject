@@ -1,7 +1,9 @@
-<link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet"> 
-
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
 <style type="text/css">
+.container #dete h1,h2,h3,h4{
+          font-family: 'Roboto', sans-serif;
+}
  #win{
 	color:green;
 }
@@ -20,11 +22,24 @@
 	color:#003366;
 }
 
+#played{
+color:#1D00FF;
+}
+
+#tea{
+	color:#AD9622;
+}
+
 </style>
 
-<h1> FULL PERFORMANCE REPORT OF {{statsdet.teamname}}</h1>
-<h3>TEAM KEY:{{statsdet.data1}}</h3>
-<h1>TOTAL MATCHES PLAYED TILL 2017: {{statsdet.total_matches_played}}</h1>
+
+
+
+
+<div class="container" id="dete">
+<h1> FULL PERFORMANCE REPORT OF:" <span id="tea">{{statsdet.teamname}}</span>"</h1>
+<h3>TEAM KEY:"<span id="tea">{{statsdet.data1}}"</h3>
+<h1>TOTAL MATCHES PLAYED TILL 2017:<span id="played"> {{statsdet.total_matches_played}}</span></h1>
 <h2>REVIEW:<span id="review">"{{statsdet.performance}}"</span></h2>
 <h2>TOTAL WINS TILL 2017:<span id="win">{{statsdet.total_wins}}</span></h2>
 <h2>TOTAL LOSS TILL 2017:<span id="los">{{statsdet.total_loss}}</span></h2>
@@ -32,7 +47,7 @@
 <h2>TOTAL TIES IN CARRER:<span id="tiesa">{{statsdet.total_ties}}</span></h2>
 <h2>2017-16 performance:</h2>
 <ul>
-	<li><h3>MATCHES PLAYED:{{statsdet.matches_played17}}</h3></li>
+	<li><h3>MATCHES PLAYED:<span id="played">{{statsdet.matches_played17}}</span></h3></li>
 	<li><h3>TOTAL GOALS KICKED:<span id="goal">{{statsdet.goals17}}</span></h3></li>
 	<li><h3>TOTAL WINS IN 2016-17:<span id="win">{{statsdet.total_wins17}}</span></h3></li>
 	<li><h3>TOTAL LOSS IN 2016-17:<span id="los">{{statsdet.total_losses17}}</span></h3></li>
@@ -48,33 +63,35 @@
 	<li><H4>MATCHES WON AS CHALLENGER:<span id="win">{{statsdet.wins_challenger17}}</span></H4></li>
 	<li><H4>MATCHES LOSS AS CHALLENGER:<span id="los">{{statsdet.loss_challenger17}}</span></H4></li>
 		
-	
+</ul>	
 
-<ul>	
+	
 
 
 
 <h1>2015-16 performance:</h1>
 <ul>
-	<li><h3>MATCHES PLAYED:{{statsdet.matches_played16}}</h3></li>
+	<li><h3>MATCHES PLAYED:<span id="played">{{statsdet.matches_played16}}</span></h3></li>
 	<li><h3>TOTAL GOALS KICKED:<span id="goal">{{statsdet.goals16}}</span></h3></li>
 	<li><h3>TOTAL WINS IN 2015-16:<span id="win">{{statsdet.total_wins16}}</span></h3></li>
 	<li><h3>TOTAL LOSS IN 2015-16:<span id="los">{{statsdet.total_losses16}}</span></h3></li>
 	<li><h3>TOTAL TIES IN 2015-16:<span id="tiesa">{{statsdet.ties16}}</span></h3></li>
 
-	<li><H3>MATCHES PLAYED AS DEFENDER(at house):{{statsdet.matches_defender16}}</H3></li>
+	<li><H3>MATCHES PLAYED AS<span id="los"> DEFENDER(at house):</span>{{statsdet.matches_defender16}}</H3></li>
 
 	<li><H4>MATCHES WON AS DEFENDER(house wins):<span id="win">{{statsdet.wins_defender16}}</span></H4></li>
 	<li><H4>MATCHES LOSS AS DEFENDER(house loss):<span id="los">{{statsdet.loss_defender16}}</span></H4></li>
 
-	<li><H3>MATCHES PLAYED AS CHALLENGER:{{statsdet.matches_challenger16}}</H3></li>
+	<li><H3>MATCHES PLAYED AS<span id="win"> CHALLENGER:</span>{{statsdet.matches_challenger16}}</H3></li>
 
 	<li><H4>MATCHES WON AS CHALLENGER:<span id="win">{{statsdet.wins_challenger16}}</span></H4></li>
-	<li><H4>MATCHES LOSS AS CHALLENGER:<span id="win">{{statsdet.loss_challenger16}}</span></H4></li>
+	<li><H4>MATCHES LOSS AS CHALLENGER:<span id="los">{{statsdet.loss_challenger16}}</span></H4></li>
 		
 	
 
-<ul>	
+</ul>	
+
+</div>
 
 
 	<a href="#/third">click here to go back</a>

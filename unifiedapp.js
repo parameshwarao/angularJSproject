@@ -660,7 +660,7 @@ main.total_loss=main.total_losses17+main.total_losses16;
 main.total_ties=main.ties17+main.ties16;
 main.total_goals=main.goals17+main.goals16;
 if(main.total_wins>main.total_loss){
-  main.performance="more wins than loss. very good performance";
+  main.performance="more wins than loss.very good performance!!";
 }
 else{
   main.performance="losses are higher. Matches lost are greater over the time";
