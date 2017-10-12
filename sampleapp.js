@@ -32,6 +32,21 @@ myApp.config(['$routeProvider', function($routeProvider){
             controllerAs    : 'thirdpage'
         })
 
+
+        .when('/det/:matchid',{
+
+
+            templateUrl     : 'views/statsdetails.html',
+            controller      : 'statsdetController',             //teamsisepageload
+            controllerAs    : 'statsdet'
+
+
+
+
+
+
+        })
+
         .when('/details/:matchid1/:matchid2/:matchdate',{  //first page details controller
 
           templateUrl : 'views/details.html',
@@ -42,7 +57,7 @@ myApp.config(['$routeProvider', function($routeProvider){
 
         })
 
-        .when('/details2/:matchid1/:matchid2/:matchdate',{
+        .when('/details2/:matchid1/:matchid2/:matchdate',{    //2015/16 page controller
 
           templateUrl :'views/scoresdetails.html',
           controller :'detailscontroller2',
@@ -177,12 +192,139 @@ myApp.controller('secondController',['$scope', '$log', '$http',function($scope, 
 //----------------------------------------------------------------------THIRD PAGE CONTROLLER----------------------------------------------------------//
 myApp.controller('thirdController',['$scope', '$log', '$http',function($scope,  $log, $http){
 
+var main =this;
+
+//
+this.rounds = [];
+this.keys1 =[];
+this.keys2=[];
+this.masterlist=[];
+
+//function to filter multiple duplicate keys
+function unique(list) {
+            var result = [];
+            $.each(list, function(i, e) {
+              
+            if ($.inArray(e, result) == -1){ result.push(e);}
+            });
+            console.log("function end");
+             return result;
+        
+             }
+//jquery part ends//
+
+
+
+this.keysACQ = function(data){
+   var keyslist1 = [];
+   var keyslist2 = [];
+   var control=0;
+   var masterkey = [];
+                       console.log(data);
+                       main.rounds = data.rounds;
+               for (var i in main.rounds){
+               for (var j in main.rounds[i].matches){
+                
+                  keyslist1[control]=main.rounds[i].matches[j].team1.code;
+                  keyslist2[control]=main.rounds[i].matches[j].team2.code;
+                  control++;
+
+                      
+                       }//i loop end
+                    }//j loop end
+                    masterkey=keyslist1.concat(keyslist2);
+                    //console.log(masterkey);
+                    uniqueKeys =unique(masterkey);
+                    main.keys1=uniqueKeys;
+                    console.log("2017/16 keys:"+main.keys1); 
+                    main.historyKeys();  //for loading second set of keys from 2015-16                                                         
+                 
 
 
 
 
 
 
+                 } //function end
+
+
+
+this.historyKeys = function(){                                                  //to invoke HTTP for the second URL
+$http({
+  method:'GET',
+  url:'https://raw.githubusercontent.com/openfootball/football.json/master/2015-16/en.1.json'
+}).then(function sucessCallback(response){                      
+      main.keysHIS(response.data);       }   
+
+
+
+        );
+
+}
+
+this.keysHIS = function(data){                                                  // for getting the second set of keys
+   var keyslist1 = [];
+   var keyslist2 = [];
+   var control=0;
+   var masterkey = [];
+                       console.log(data);
+                       main.rounds = data.rounds;
+               for (var i in main.rounds){
+               for (var j in main.rounds[i].matches){
+                
+                  keyslist1[control]=main.rounds[i].matches[j].team1.code;
+                  keyslist2[control]=main.rounds[i].matches[j].team2.code;
+                  control++;
+
+                      
+                       }//i loop end
+                    }//j loop end
+                    masterkey=keyslist1.concat(keyslist2);//combined list of keys
+                    console.log(masterkey);
+                    uniqueKeys =unique(masterkey); //to filter duplicate keys
+                    main.keys2=uniqueKeys;
+                    console.log("2015/16 keys:"+main.keys2); 
+                    var combinedkeys;
+                    combinedkeys=main.keys1.concat(main.keys2);
+                    main.masterlist=unique(combinedkeys);
+                    console.log("finallist:"+main.masterlist); 
+                    console.log("key acquistion over,now to print name");    
+                                                                               
+                 
+
+
+}//funtion end
+  
+
+
+
+
+
+//http request
+$http({
+  method:'GET',
+  url:'https://raw.githubusercontent.com/openfootball/football.json/master/2016-17/en.1.json'
+}).then(function sucessCallback(response){                      
+      main.keysACQ(response.data); 
+      console.log("function started");
+      
+             
+
+
+       
+
+
+       }
+
+
+
+
+
+        
+
+
+
+        );
 
 
 
@@ -199,6 +341,362 @@ myApp.controller('thirdController',['$scope', '$log', '$http',function($scope,  
 
 
 //---------------------------------------------------------------------THIRD PAGE CONTROLLER END-----------------------------------------------------//
+
+//------------controller AS:statsdet------------------------------------STATSDETAILS CONTROLLER------------controller:statsdetController------------//
+
+myApp.controller('statsdetController',['$http','$location','$routeParams', function($http,$location,$routeParams,){
+
+
+
+console.log("routeservice has been invoked using ID's "+$routeParams.matchid);
+        //variables to store all the params data
+    var main = this ;
+//matches defender and challenger
+
+this.rounds = [];
+
+
+this.teamname;
+
+this.data1=$routeParams.matchid;
+this.matches_defender17;
+this.matches_challenger17;
+this.matches_defender16;
+this.matches_challenger16;
+//matches total
+this.matches_played17;
+this.matches_played16;
+this.total_matches_played;
+//defender
+this.wins_defender17;
+this.loss_defender17;
+//challenger
+this.wins_challenger16;
+this.loss_challenger16; 
+//17
+this.total_wins17;
+this.total_losses17;
+//16
+this.total_wins16;
+this.total_losses16;
+//ties
+this.ties17;
+this.ties16;
+this.total_ties;
+//goals
+this.goals17;
+this.goals16;
+this.total_goals;
+//progress
+this.total_wins;
+this.total_loss;
+this.total_ties;
+this.performance;
+
+
+
+$http({
+  method:'GET',
+  url:'https://raw.githubusercontent.com/openfootball/football.json/master/2016-17/en.1.json'
+}).then(function sucessCallback(response){                      
+      //console.log(response);
+      var dummy=response.data;
+      main.stats17(response.data,main.data1);  
+             
+      }
+
+
+
+
+
+        
+
+
+
+        );
+
+       
+
+
+
+
+this.stats17= function(data,data1){
+  console.log("stats17 is running");
+  //master key
+  var keysholder;
+  keysholder=data1;
+  console.log("key:"+data1+"data:"+data.rounds);
+  //matches
+  var totalPlay=0;
+  var matchesplayedDef=0;
+  var matchesplayedChall=0;
+  //statistics
+  //defender
+  var defenderWins=0;
+  var defenderLosses=0;
+  var defenderGoal=0;
+  //challenger
+  var challengerWins=0;
+  var challengerLosses=0;
+  var challengerGoal=0;
+  var ties=0;
+  //total  
+  var totalWins=0;
+  var totalLoss=0;
+  var totalgoals=0;
+  //
+  main.rounds = data.rounds;
+  keysholder=data1;
+  console.log(data);
+  console.log("key used is "+keysholder);
+   for (var i in main.rounds){
+               for (var j in main.rounds[i].matches){
+                            //defender
+                        if(main.rounds[i].matches[j].team1.code==data1){
+                              matchesplayedDef++;
+                              main.teamname=main.rounds[i].matches[j].team1.name;
+
+
+
+                                            if(main.rounds[i].matches[j].score1>main.rounds[i].matches[j].score2){
+                                              defenderWins++;
+                                              defenderGoal=defenderGoal+main.rounds[i].matches[j].score1;
+                                              }
+                                             else if(main.rounds[i].matches[j].score1<main.rounds[i].matches[j].score2){
+                                             defenderLosses++; 
+                                             }
+                                             else if(main.rounds[i].matches[j].score2==main.rounds[i].matches[j].score1) {
+                                             ties++;
+                                             }
+                                             else {}
+
+                                                                        }
+                              //challenger
+                         else if(main.rounds[i].matches[j].team2.code==data1){
+                                            matchesplayedChall++;
+                                            main.teamname=main.rounds[i].matches[j].team2.name;
+                                            if(main.rounds[i].matches[j].score2>main.rounds[i].matches[j].score1){
+                                              challengerWins++;
+                                              challengerGoal=challengerGoal+main.rounds[i].matches[j].score2;
+                                              }
+                                             else if(main.rounds[i].matches[j].score2<main.rounds[i].matches[j].score1){
+                                             challengerLosses++; 
+                                             }
+                                             else if(main.rounds[i].matches[j].score2==main.rounds[i].matches[j].score1) {
+                                             ties++;
+                                             }
+                                             else{}
+                          
+
+                          } 
+                          else{/*this "else" is only a joke,nothing can be done here a team cant play by itself//*/}     
+
+
+
+
+
+
+                                                                        
+                      
+                      
+
+
+                       }//i loop end
+                    }//j loop end
+
+ totalPlay= matchesplayedDef+matchesplayedChall;
+ totalWins = defenderWins+challengerWins;
+ totalLoss = defenderLosses+challengerLosses;
+ totalgoals = defenderGoal+challengerGoal;
+//loading all data
+main.matches_defender17=matchesplayedDef;
+main.matches_challenger17=matchesplayedChall;
+main.matches_played17=totalPlay;
+main.wins_defender17=defenderWins;
+main.loss_defender17=defenderLosses;
+main.wins_challenger17=challengerWins;
+main.loss_challenger17=challengerLosses;
+main.total_wins17=totalWins;
+main.total_losses17=totalLoss;
+main.ties17=ties;
+main.goals17=totalgoals;
+console.log("loss defender:"+main.loss_defender17+"loss challenger:"+main.loss_challenger17+"total:="+main.total_losses17);
+
+//to call Http and send second set of data to stats16
+
+
+
+$http({
+  method:'GET',
+  url:'https://raw.githubusercontent.com/openfootball/football.json/master/2015-16/en.1.json'
+}).then(function sucessCallback(response){                      
+      //console.log(response);
+      var dummy=response.data;
+      main.stats16(response.data,main.data1);  
+             
+      }
+
+
+
+
+
+        
+
+
+
+        );
+
+
+}//stats17 function end
+
+
+this.stats16= function(data,data1){
+  console.log("stats16 is running")
+  //master key
+  var keysholder;
+  keysholder=data1;
+  //matches
+  var totalPlay=0;
+  var matchesplayedDef=0;
+  var matchesplayedChall=0;
+  //statistics
+  //defender
+  var defenderWins=0;
+  var defenderLosses=0;
+  var defenderGoal=0;
+  //challenger
+  var challengerWins=0;
+  var challengerLosses=0;
+  var challengerGoal=0;
+  var ties=0;
+  //total  
+  var totalWins=0;
+  var totalLoss=0;
+  var totalgoals=0;
+  //
+  main.rounds = data.rounds;
+  keysholder=data1;
+  console.log(data);
+  console.log("stasts 16 keys"+keysholder);
+   for (var i in main.rounds){
+               for (var j in main.rounds[i].matches){
+                            //defender
+                        if(main.rounds[i].matches[j].team1.code==data1){
+                              matchesplayedDef++;
+                              main.teamname=main.rounds[i].matches[j].team1.name;
+                                            if(main.rounds[i].matches[j].score1>main.rounds[i].matches[j].score2){
+                                              defenderWins++;
+                                              defenderGoal=defenderGoal+main.rounds[i].matches[j].score1;
+                                              }
+                                             else if(main.rounds[i].matches[j].score1<main.rounds[i].matches[j].score2){
+                                             defenderLosses++; 
+                                             }
+                                             else {
+                                             ties++;
+                                             }
+
+                                                                        }
+                              //challenger
+                         else if(main.rounds[i].matches[j].team2.code==data1){
+                                            matchesplayedChall++;
+                                            main.teamname=main.rounds[i].matches[j].team2.name;
+                                            if(main.rounds[i].matches[j].score2>main.rounds[i].matches[j].score1){
+                                              challengerWins++;
+                                              challengerGoal=challengerGoal+main.rounds[i].matches[j].score2;
+                                              }
+                                             else if(main.rounds[i].matches[j].score2<main.rounds[i].matches[j].score1){
+                                             challengerLosses++; 
+                                             }
+                                             else {
+                                             ties++;
+                                             }
+                          
+
+                          } 
+                          else{/*this "else" is only a joke,nothing can be done here a team cant play by itself//*/}     
+
+
+
+
+
+
+                                                                        
+                      
+                      
+
+
+                       }//i loop end
+                    }//j loop end
+
+ totalPlay= matchesplayedDef+matchesplayedChall;
+ totalWins = defenderWins+challengerWins;
+ totalLoss = defenderLosses+challengerLosses;
+ totalgoals = defenderGoal+challengerGoal;
+//loading all data
+main.matches_defender16=matchesplayedDef;
+main.matches_challenger16=matchesplayedChall;
+main.matches_played16=totalPlay;
+main.wins_defender16=defenderWins;
+main.loss_defender16=defenderLosses;
+main.wins_challenger16=challengerWins;
+main.loss_challenger16=challengerLosses;
+main.total_wins16=totalWins;
+main.total_losses16=totalLoss;
+main.ties16=ties;
+main.goals16=totalgoals;
+
+console.log("loss:"+main.loss_defender16+"loss:"+main.loss_challenger16+"total:="+main.total_losses16);
+//to call total stats
+main.totalstats(data1);
+
+
+}//stats16 function end
+this.totalstats= function(data1){
+  console.log("total invoked");
+
+main.total_matches_played=main.matches_played17+main.matches_played16;
+main.total_wins=main.total_wins17+main.total_wins16;
+main.total_loss=main.total_losses17+main.total_losses16;
+main.total_ties=main.ties17+main.ties16;
+main.total_goals=main.goals17+main.goals16;
+if(main.total_wins>main.total_loss){
+  main.performance="more wins than loss. very good performance";
+}
+else{
+  main.performance="losses are higher. Matches lost are lost over the time";
+}
+//console.log("working:"+main.total_matches_played);
+console.log("total loss: "+main.total_loss);
+console.log("teamname:"+main.teamname);
+console.log(main.performance);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }]);
+
+
+
+
+
+//--------------------------------------------------------------------STATSDETAILS CONTROLLER END------------------------------------------------------//
 
 //----------------------------------------------------------------------CURRENT SCORES CONTROLLER----------------------------------------------------//
 myApp.controller('detailscontroller1',['$http','$location','$routeParams', function($http,$location,$routeParams,){
