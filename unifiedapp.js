@@ -107,7 +107,7 @@ myApp.controller('mainController',['$scope', '$log', '$http',function($scope,  $
                    $log.info(response.data.name);      //to chek whether data from API is correct
                    $log.info("matchName:"+$scope.ListData.name); //to check whether data has correctly been placed in the array
                    $log.info("roundsName:"+$scope.rounds[0].name);//to check whether rounds data has been acquired
-                   console.log($scope.dates[1].date); // i am not able to print any date here
+                   //console.log($scope.dates[1].date); 
 
                    },
 
@@ -128,7 +128,7 @@ myApp.controller('mainController',['$scope', '$log', '$http',function($scope,  $
 
 //----------------------------------------------------------------------FIRST PAGE CONTROLLER END-------------------------------------------------------//
 
-//----------------------------------------------------------------------SECOND PAGE CONTROLLER----------------------------------------------------------//
+//-----------------controller : 'secondController'------------------SECOND PAGE CONTROLLER-----------------'views/scores.html'-------------------------//
 
 myApp.controller('secondController',['$scope', '$log', '$http',function($scope,  $log, $http){
 
@@ -154,7 +154,7 @@ myApp.controller('secondController',['$scope', '$log', '$http',function($scope, 
                    $log.info(response.data.name);      //to chek whether data from API is correct
                    $log.info("matchName:"+$scope.ListData.name); //to check whether data has correctly been placed in the array
                    $log.info("roundsName:"+$scope.rounds[0].name);//to check whether rounds data has been acquired
-                   console.log($scope.dates[1].date); // i am not able to print any date here
+                   //console.log($scope.dates[1].date); // i am not able to print any date here
 
                    },
 
@@ -189,8 +189,12 @@ myApp.controller('secondController',['$scope', '$log', '$http',function($scope, 
 
 //-------------------------------------------------------------------SECOND PAGE CONTROLLER END---------------------------------------------------------//
 
-//----------------------------------------------------------------------THIRD PAGE CONTROLLER----------------------------------------------------------//
+//----------------------controller : 'thirdController',------------THIRD PAGE CONTROLLER-------------------- templateUrl: 'views/firstpage.html',-------//
 myApp.controller('thirdController',['$scope', '$log', '$http',function($scope,  $log, $http){
+
+
+	//working of this controller
+	//$HTTP() calls-->main.keysACQ() calls-->main.historykey() calls--->keysHIS() calls--->END
 
 var main =this;
 
@@ -254,7 +258,13 @@ $http({
   method:'GET',
   url:'https://raw.githubusercontent.com/openfootball/football.json/master/2015-16/en.1.json'
 }).then(function sucessCallback(response){                      
-      main.keysHIS(response.data);       }   
+      main.keysHIS(response.data);       },
+       function errorCallback(response){
+                   // called asynchronously if an error occurs
+                   // or server returns response with an error status.
+                   alert("some error occurred. Check the console.");
+                   console.log(response);
+                    }   
 
 
 
@@ -306,25 +316,16 @@ $http({
   url:'https://raw.githubusercontent.com/openfootball/football.json/master/2016-17/en.1.json'
 }).then(function sucessCallback(response){                      
       main.keysACQ(response.data); 
-      console.log("function started");
-      
-             
+      console.log("function started");       
 
-
-       
-
-
-       }
-
-
-
-
-
-        
-
-
-
-        );
+       },
+        function errorCallback(response){
+                   // called asynchronously if an error occurs
+                   // or server returns response with an error status.
+                   alert("some error occurred. Check the console.");
+                   console.log(response);
+                    }
+		 );
 
 
 
@@ -346,7 +347,9 @@ $http({
 
 myApp.controller('statsdetController',['$http','$location','$routeParams', function($http,$location,$routeParams,){
 
+//working flow of controller
 
+//$HTTP() calls-->main.stats17() calls ---> main.stats16() calls-->--->main.totalstats()-->END
 
 console.log("routeservice has been invoked using ID's "+$routeParams.matchid);
         //variables to store all the params data
@@ -403,17 +406,14 @@ $http({
       var dummy=response.data;
       main.stats17(response.data,main.data1);  
              
-      }
-
-
-
-
-
-        
-
-
-
-        );
+      },
+      function errorCallback(response){
+                   // called asynchronously if an error occurs
+                   // or server returns response with an error status.
+                   alert("some error occurred. Check the console.");
+                   console.log(response);
+                    }      
+		);
 
        
 
@@ -534,17 +534,15 @@ $http({
       var dummy=response.data;
       main.stats16(response.data,main.data1);  
              
-      }
+      },
+      function errorCallback(response){
+                   // called asynchronously if an error occurs
+                   // or server returns response with an error status.
+                   alert("some error occurred. Check the console.");
+                   console.log(response);
+                    }
 
-
-
-
-
-        
-
-
-
-        );
+	    );
 
 
 }//stats17 function end
@@ -698,7 +696,7 @@ console.log(main.performance);
 
 //--------------------------------------------------------------------STATSDETAILS CONTROLLER END------------------------------------------------------//
 
-//----------------------------------------------------------------------CURRENT SCORES CONTROLLER----------------------------------------------------//
+//----------------------controllerAS : 'details1'------------------------CURRENT SCORES CONTROLLER-------------- templateUrl : 'views/details.html'----//
 myApp.controller('detailscontroller1',['$http','$location','$routeParams', function($http,$location,$routeParams,){
 
     var main = this ;
@@ -793,13 +791,17 @@ console.log("routeservice has been invoked using ID's "+$routeParams.matchid1+$r
 
   }]);
 
+//-----------------------------------------------------------current details controller ends---------------------------------------------------------//
+
+
+
 
 //--------------!!!!NOTE SAME DETAILS CONTROLLER AS ABOVE BUT DIFFERENT URL. WARNING!!!!!! NOT TO BE CONFUSED BY ABOVE CONTROLLER.REFER ROUTING------//
 
 
 
 
-//---------------------------------------------------------------- HISTORY RECORDS CONTROLLER---------------------------------------//
+//------controller :'detailscontroller2'--------------- HISTORY RECORDS CONTROLLER---------------templateUrl :'views/scoresdetails.html'-----------------//
 myApp.controller('detailscontroller2',['$http','$location','$routeParams', function($http,$location,$routeParams,){
 
     var main = this ;
