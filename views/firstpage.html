@@ -1,35 +1,60 @@
+<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
 <style type="text/css">
 
+ #date{
+	color: maroon;
+}
+ #end{
+color: red;
+font-family: 'Gloria Hallelujah', cursive;
+font-size:larger;
 
+}
 
 
 </style>
+<script type="text/javascript">
+	function ClearFields() {
+
+     document.getElementById("btn1").value = "";
+     document.getElementById("btn2").value = "";
+     document.getElementById("btn3").value = "";
+     document.getElementById("btn4").value = "";
+     document.getElementById("btn5").value = "";
+}
+
+</script>
 
 
 <h1>WELCOME TO THE FIRST PAGE. WE HAVE CURRENT SCORES HERE</h1>
 
-<select ng-model="matchday" ng-options="data.name for data in rounds">search using Matchday:</select>
-<div ng-repeat="data in rounds | filter:matchday.name:true">
 
-		<select ng-model="dates1" ng-options="anotherdata.date for anotherdata in data.matches"></select>
-		<h1>{{data.name}}</h1>
-		<div ng-repeat="anotherdata in data.matches">
-		<h2><a href="#/details/{{anotherdata.team1.key}}/{{ anotherdata.team2.key}}/{{anotherdata.date}}">{{anotherdata.date}}{{anotherdata.team1.key}}{{ anotherdata.team2.key}}{{anotherdata.team1.name}} vs {{anotherdata.team2.name}}</a></h2>
-		<h4>DATE:{{anotherdata.date | date:'MM/dd/yyyy'}}  STATUS:</h4>
-		</div>
-
-
-		</div>
-		<p>The above is the latest</p>
+<!--</select>-->
+<ul>
+ <li>MATCHDAY:<select ng-model="days" id="btn1" ng-options="data.name for data in rounds" ></select></li>
+ <li>SEARCH USING YEAR:<select id="btn2" ng-model="teamsearch.date"><option value="2017">2017</option><option value="2016">2016</option></select></li>
+ <li>SEARCH BY TEAM NAME:<input type="text" id="btn3" size="8"  ng-model="teamname.team1.name"></li>
+ <li>SEARCH BY challenger:<input type="text" id="btn4" size="8"  ng-model="teamname2.team2.name"></li>
+ <li>SEARCH BY keynames:<input type="text" id="btn5" size="8"  ng-model="keynames.team1.key"></li>
+  <li><button type="button" onclick="ClearFields();">Clear</button></li>
+<ul>
 
 
-<!--/div>
- <h3>{{matches.name}}</h3>
-          console.log({{matches.name}});
-          <li>{{matches.rounds.name}}</li>
-          console.log({{matches.rounds.name}});
-          <li>{{matches.rounds.team1.name}}</li>
-          <li>{{matches.matches.date | date:'medium'}}</li>
-        
 
-  </div>-->
+
+
+<div id="container" ng-repeat="data in rounds | filter:days.name:true">
+ <div ng-repeat="anotherdata in data.matches | filter:teamsearch | filter:teamname | filter:teamname2 | filter:keynames">
+	<h2><a href="#/details/{{anotherdata.team1.code}}/{{ anotherdata.team2.code}}/{{anotherdata.date}}">{{anotherdata.team1.name}} vs {{anotherdata.team2.name}}</a></h2>
+	<h4>DATE:{{anotherdata.date | date:'MM/dd/yyyy'}}  KEYS:{{anotherdata.team1.key}},{{ anotherdata.team2.key}}</h4>
+	<h5 id="date">EVENT DAY:{{data.name}}</h5>
+</div>
+
+
+
+</div>
+		<p id="end">End of record. No More Record!!</p>
+
+
+
+

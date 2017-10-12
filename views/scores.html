@@ -1,15 +1,57 @@
-<h1>this is the scores pages</h1>
 
 
 
-<select ng-model="matchday" ng-options="data.name for data in rounds1"><h4>search using match day</h4></select>
-<div ng-repeat="data in rounds1 | filter:matchday.name:true">	
-<h1>{{data.name}}</h1>
-<div ng-repeat="anotherdata in data.matches">	
-<h2><a href="#/">{{anotherdata.team1.name}} vs {{anotherdata.team2.name}}</a></h2>
-<h4>DATE:{{anotherdata.date | date:'MM/dd/yyyy'}}  STATUS:</h4>
+<style type="text/css">
+
+ #date{
+	color: maroon;
+}
+
+ #end{
+color: red;
+font-family: 'Gloria Hallelujah', cursive;
+font-size:larger;
+
+}
+
+</style>
+<script type="text/javascript">
+	function ClearFields() {
+
+     document.getElementById("btn1").value = "";
+     document.getElementById("btn2").value = "";
+     document.getElementById("btn3").value = "";
+     document.getElementById("btn4").value = "";
+     document.getElementById("btn5").value = "";
+ }
+</script>
+
+
+<h1>HISTORY RECORDS OF EPL 15-16</h1>
+
+
+
+<ul>
+ <li>MATCHDAY:<select ng-model="days" id="btn1" ng-options="data.name for data in rounds" ></select></li>
+ <li>SEARCH USING YEAR:<select id="btn2" ng-model="teamsearch.date"><option value="2015">2015</option><option value="2016">2016</option></select></li>
+ <li>SEARCH USING TEAM:<input type="text" id="btn3" size="8"  ng-model="teamname.team1.name"></li>
+ <li>SEARCH USING CHALLENGER:<input id="btn4" type="text" size="8"  ng-model="teamname2.team2.name"></li>
+ <li>SEARCH USING keynames:<input id="btn5" type="text" size="8"  ng-model="keynames.team1.key"></li>
+  <li><button type="button" onclick="ClearFields();">Clear</button></li>
+<ul>
+
+
+
+
+
+<div id="container" ng-repeat="data in rounds | filter:days.name:true">
+	<div ng-repeat="anotherdata in data.matches | filter:teamsearch | filter:teamname | filter:teamname2 | filter:keynames">
+	<h2><a href="#/details2/{{anotherdata.team1.code}}/{{ anotherdata.team2.code}}/{{anotherdata.date}}">{{anotherdata.team1.name}} vs {{anotherdata.team2.name}}</a></h2>
+	<h4>DATE:{{anotherdata.date | date:'MM/dd/yyyy'}}  KEYS:{{anotherdata.team1.key}},{{ anotherdata.team2.key}}</h4>
+	<h5 id="date">EVENT DAY:{{data.name}}</h5>
+	</div>
+
+
+
 </div>
-
-
-</div>
-<p>The above is the latest</p>
+		<p id="end">End of record. No More Record!!</p>
