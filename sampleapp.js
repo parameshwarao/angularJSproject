@@ -663,7 +663,7 @@ if(main.total_wins>main.total_loss){
   main.performance="more wins than loss. very good performance";
 }
 else{
-  main.performance="losses are higher. Matches lost are lost over the time";
+  main.performance="losses are higher. Matches lost are greater over the time";
 }
 //console.log("working:"+main.total_matches_played);
 console.log("total loss: "+main.total_loss);
